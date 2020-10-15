@@ -1,29 +1,29 @@
 <template>
-  <textarea class="block text" v-model="edit.content" @input="update"></textarea>
+  <p v-if="content.type === 'p'">{{ text }}</p>
+  <h2 v-else-if="content.type === 'h2'">{{ text }}</h2>
+  <h3 v-else-if="content.type === 'h3'">{{ text }}</h3>
+  <h4 v-else-if="content.type === 'h4'">{{ text }}</h4>
 </template>
 
 <script>
-import { clone } from '@/utils';
-
 export default {
   name: 'TextBlock',
   props: {
-    block: {
+    content: {
       type: Object,
       required: true
     }
   },
-  data() {
-    return {
-      edit: clone(this.block)
-    };
-  },
-  methods: {
-    update() {
-      this.$emit('update', this.edit);
+  computed: {
+    text() {
+      return this.content.text
     }
-  }
+  },
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+p {
+  white-space: pre-wrap;
+}
+</style>

@@ -14,7 +14,7 @@
       <div v-for="child in edit.children" :key="child.id">
         <ColumnsBlock v-if="child.type === 'columns'" :block="child" @update="updateChild" />
         <GroupBlock v-else-if="child.type === 'group'" :block="child" @update="updateChild" />
-        <TextBlock v-else :block="child" @update="updateChild" />
+        <ContentBlock v-else :block="child" @update="updateChild" />
       </div>
     </draggable>
   </div>
@@ -26,7 +26,7 @@ import ContextMenu from '../ContextMenu';
 import AddChildMenu from '../AddChildMenu';
 import draggable from 'vuedraggable';
 import ColumnsBlock from './ColumnsBlock';
-import TextBlock from './TextBlock';
+import ContentBlock from './ContentBlock';
 
 export default {
   name: 'Group',
@@ -35,7 +35,7 @@ export default {
     AddChildMenu,
     draggable,
     ColumnsBlock,
-    TextBlock,
+    ContentBlock,
     GroupBlock: () => import('./GroupBlock')
   },
   props: {

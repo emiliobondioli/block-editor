@@ -10,7 +10,7 @@ const defaultBlocks = {
   }),
   text: () => ({
     type: 'text',
-    content: ''
+    children: []
   }),
   columns: async context => {
     const block = {
