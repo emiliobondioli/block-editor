@@ -1,7 +1,9 @@
 <template>
-  <div class="context-menu">
+  <div class="context-menu" :class="{ vertical }">
     <div class="menu-open" @click="open">
-      <i class="ri-menu-line"></i>
+      <slot name="icon">
+        <i class="ri-menu-line"></i>
+      </slot>
     </div>
     <div class="menu-container" v-show="show">
       <i class="ri-close-line" @click="close"></i>
@@ -13,6 +15,9 @@
 <script>
 export default {
   name: 'ContextMenu',
+  props: {
+    vertical: Boolean
+  },
   data() {
     return {
       show: false
@@ -43,6 +48,9 @@ export default {
     background: $col-background-light;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     padding: $padding/2;
+  }
+  &.vertical ul {
+    flex-direction: column;
   }
   ::v-deep {
     ul,
