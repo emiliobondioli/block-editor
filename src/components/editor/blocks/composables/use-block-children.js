@@ -1,7 +1,7 @@
 import { computed, ref } from '@vue/composition-api';
 
 export default function({ edit, update }, { $store, $set }) {
-  const blocks = ref(null);
+  const blocks = ref([]);
   const empty = computed(() => !edit.value.children.length);
 
   const addChild = type => {
@@ -28,21 +28,27 @@ export default function({ edit, update }, { $store, $set }) {
     update();
   };
 
-  const getPreviousChild = child => {
-    const idx = edit.value.children.findIndex(c => c.id === child.id);
-    return edit.value.children[idx - 1];
+  const getChildIndex = child => {
+    return edit.value.children.findIndex(c => c.id === child.id);
   };
 
-  const selectPreviousChild = idx => {
-    const prev = blocks[idx - 1];
-    if (prev && prev.editBlock) {
-      prev.editBlock();
+  const getChild = idx => {
+    return edit.value.children[idx];
+  };
+
+  const selectChildComponent = child => {
+    const idx = getChildIndex(child);
+    const childComponent = blocks.value[idx];
+    if (childComponent && childComponent.editBlock) {
+      childComponent.editBlock();
     }
   };
 
   const checkCollapseChild = child => {
-    const prev = getPreviousChild(child);
+    const idx = getChildIndex(child);
+    const prev = getChild(idx - 1);
     if (prev && prev.type === 'text') {
+      selectChildComponent(prev);
       updateChild({ ...prev, content: prev.content + child.content });
       deleteChild(child);
     }
@@ -50,12 +56,11 @@ export default function({ edit, update }, { $store, $set }) {
 
   return {
     empty,
+    blocks,
     addChild,
     addChildIfEmpty,
     updateChild,
     deleteChild,
-    getPreviousChild,
-    selectPreviousChild,
     checkCollapseChild
   };
 }
