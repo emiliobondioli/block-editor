@@ -52,11 +52,33 @@ i {
 }
 
 h2,
-p.title {
+textarea.h2 {
+  font-family: sans-serif;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 0.5rem;
   font-size: 1.6rem;
+  line-height: 105%;
 }
 
 h3,
-p.subtitle {
+textarea.h3 {
+  font-family: sans-serif;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 0.5rem;
   font-size: 1.2rem;
+  line-height: 105%;
+}
+
+p,
+textarea.p {
+  font-family: sans-serif;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  line-height: 105%;
 }
