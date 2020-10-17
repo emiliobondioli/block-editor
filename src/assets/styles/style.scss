@@ -33,7 +33,7 @@ i {
   &.columns {
     border: $border-hairline;
     padding: $padding/4;
-    .cols > .column {
+    .cols > .col {
       border: 0;
       &:not(:last-child) {
         border-right: $border-hairline;
