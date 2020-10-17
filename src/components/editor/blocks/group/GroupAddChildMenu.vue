@@ -24,7 +24,7 @@ export default {
   components: { ContextMenu },
   methods: {
     open() {
-      this.$refs.ctx.open()
+      this.$refs.ctx.open();
     }
   }
 };
