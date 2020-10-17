@@ -10,7 +10,8 @@ const defaultBlocks = {
   }),
   text: () => ({
     type: 'text',
-    children: []
+    tag: 'p',
+    content: ''
   }),
   columns: async context => {
     const block = {
@@ -28,11 +29,16 @@ const defaultBlocks = {
 export default new Vuex.Store({
   state: {
     blocks: [],
-    id: 0
+    id: 0,
+    confirmDelete: false
   },
   mutations: {
     ADD_BLOCK(state, data) {
       state.blocks.push(data);
+    },
+    REMOVE_BLOCK(state, data) {
+      const idx = state.blocks.findIndex(c => c.id === data.id);
+      state.blocks.splice(idx, 1);
     },
     INCREMENT_ID(state) {
       state.id += 1;
@@ -49,8 +55,13 @@ export default new Vuex.Store({
       let template = defaultBlocks[data.type];
       const block = await template(context);
       block.id = id;
+      block.options = { ...data.options };
       context.commit('ADD_BLOCK', block);
       return block;
+    },
+    delete(context, data) {
+      context.commit('REMOVE_BLOCK', data);
+      return data;
     }
   },
   modules: {}
