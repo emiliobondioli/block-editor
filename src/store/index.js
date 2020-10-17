@@ -60,6 +60,9 @@ export default new Vuex.Store({
       return block;
     },
     delete(context, data) {
+      if (data.children && data.children.length) {
+        data.children.forEach(c => context.dispatch('delete', c));
+      }
       context.commit('REMOVE_BLOCK', data);
       return data;
     }
