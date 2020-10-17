@@ -6,26 +6,15 @@
     <template v-slot:title>
       <p class="block-info">{{ block.type }} {{ block.id }}</p>
     </template>
-    <template v-slot:default="parent">
+    <template v-slot:default="{ close }">
       <ul>
         <li title="Add block">
-          <context-menu ref="ctx-child" dropdown keep-visible>
-            <template v-slot:icon>
-              <i class="ri-add-box-line"></i>
-            </template>
-            <template v-slot:title>
-              <p class="block-info">Block type</p>
-            </template>
-            <template v-slot:default="{ close }">
-              <group-add-child-menu
-                @select="
-                  $emit('add-child', $event);
-                  close();
-                  parent.close()
-                "
-              />
-            </template>
-          </context-menu>
+          <group-add-child-menu
+            @select="
+              $emit('add-child', $event);
+              close();
+            "
+          />
         </li>
         <li v-if="canDelete" @click="$emit('delete')" title="Delete block">
           <i class="ri-delete-bin-5-line"></i>
