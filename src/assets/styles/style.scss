@@ -20,15 +20,34 @@ i {
 }
 
 .block {
-  background-color: $col-background;
-  border: $border-small;
-  padding: 1rem;
-  padding-top: 2rem;
   position: relative;
-  .context-menu {
-    position: absolute;
-    top: 0;
-    left: 0;
+  .block-info {
+    font-size: $font-extra-small;
+    font-family: monospace;
+    text-transform: capitalize;
+    margin: 0 $padding/2;
+  }
+  &.group {
+    padding: $padding/2;
+  }
+  &.columns {
+    border: $border-hairline;
+    padding: $padding/4;
+    .cols > .group {
+      border: 0;
+      &:not(:last-child) {
+        border-right: $border-hairline;
+      }
+    }
+  }
+  &.group {
+    border: $border-hairline;
+    header {
+      padding: 0;
+    }
+    .group-content {
+      padding: 0.5rem;
+    }
   }
 }
 
