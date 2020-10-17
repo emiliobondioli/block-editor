@@ -53,7 +53,23 @@ export default {
   },
   methods: {
     openSettings() {},
-    confirmDelete() {},
+    confirmDelete() {
+      if (this.$store.state.confirmDelete) {
+        const confirmDelete = confirm('Are you sure you want to delete?');
+        if (!confirmDelete) return;
+      }
+      this.$emit('delete', this.edit);
+    },
+    deleteChild(child) {
+      const idx = this.edit.children.findIndex(c => c.id === child.id);
+      this.edit.children.splice(idx, 1);
+      this.$store.dispatch('delete', child);
+      this.update();
+      const prev = this.$refs.blocks[idx - 1];
+      if (prev && prev.editBlock) {
+        prev.editBlock();
+      }
+    },
     addChild(type) {
       this.$store.dispatch('create', { type }).then(block => {
         this.edit.children.push(block);
