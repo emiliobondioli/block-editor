@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import GroupBlock from './blocks/GroupBlock';
+import GroupBlock from './blocks/group/GroupBlock';
 
 export default {
   name: 'Editor',

@@ -1,15 +1,14 @@
 <template>
-  <div class="block group">
+  <div class="block column">
     <header>
       <context-menu ref="ctx">
         <template v-slot:icon>
-          <i class="ri-layout-2-line" title="Group"></i>
+          <i class="ri-layout-2-line" title="Column"></i>
         </template>
         <template v-slot:title>
           <p class="block-info">{{ block.type }} {{ block.id }}</p>
         </template>
         <ul>
-          <li @click="openSettings" title="Block settings"><i class="ri-settings-4-line"></i></li>
           <li title="Add block">
             <context-menu ref="ctx-child" dropdown keep-visible>
               <template v-slot:icon>
@@ -33,7 +32,7 @@
       :class="{ empty }"
       tag="div"
       :group="{ name: 'editor' }"
-      @click.native="addChildIfEmpty"
+      @click.native="addChildIfEmpty('text')"
     >
       <div v-for="child in edit.children" :key="child.id">
         <ColumnsBlock
@@ -65,15 +64,18 @@
 </template>
 
 <script>
-import { clone } from '@/utils';
 import ContextMenu from '../ContextMenu';
 import AddChildMenu from '../AddChildMenu';
 import draggable from 'vuedraggable';
 import ColumnsBlock from './ColumnsBlock';
 import ContentBlock from './ContentBlock';
+import useEditBlock from './composables/use-edit-block';
+import useContextMenu from './composables/use-context-menu';
+import useBlockChildren from './composables/use-block-children';
+import useTextBlock from './composables/use-text-block';
 
 export default {
-  name: 'Group',
+  name: 'ColumnBlock',
   components: {
     ContextMenu,
     AddChildMenu,
@@ -89,64 +91,39 @@ export default {
     },
     root: Boolean
   },
-  data() {
+  setup(props, { emit, root }) {
+    const { $store, $set } = root;
+    const context = { emit, $store, $set };
+    const { edit, update, confirmDelete, select } = useEditBlock(props, context);
+    const { ctx } = useContextMenu();
+    const {
+      empty,
+      addChild,
+      addChildIfEmpty,
+      updateChild,
+      deleteChild,
+      getPreviousChild,
+      selectPreviousChild
+    } = useBlockChildren({ edit, update }, context);
+    const { checkCollapseChild } = useTextBlock(
+      { getPreviousChild, updateChild, deleteChild },
+      context
+    );
     return {
-      edit: clone(this.block)
+      ctx,
+      edit,
+      select,
+      update,
+      confirmDelete,
+      empty,
+      addChild,
+      addChildIfEmpty,
+      updateChild,
+      deleteChild,
+      getPreviousChild,
+      selectPreviousChild,
+      checkCollapseChild
     };
-  },
-  computed: {
-    empty() {
-      return !this.edit.children.length;
-    }
-  },
-  methods: {
-    openSettings() {},
-    confirmDelete() {
-      if (this.$store.state.confirmDelete) {
-        const confirmDelete = confirm('Are you sure you want to delete?');
-        if (!confirmDelete) return;
-      }
-      this.$emit('delete', this.edit);
-    },
-    addChildIfEmpty() {
-      if (this.empty) this.addChild('text');
-    },
-    checkCollapseChild(child) {
-      const prev = this.getPreviousChild(child);
-      if (prev && prev.type === 'text') {
-        this.updateChild({ ...prev, content: prev.content + child.content });
-        this.deleteChild(child);
-      }
-    },
-    getPreviousChild(child) {
-      const idx = this.edit.children.findIndex(c => c.id === child.id);
-      return this.edit.children[idx - 1];
-    },
-    deleteChild(child) {
-      const idx = this.edit.children.findIndex(c => c.id === child.id);
-      this.edit.children.splice(idx, 1);
-      this.$store.dispatch('delete', child);
-      this.update();
-      const prev = this.$refs.blocks[idx - 1];
-      if (prev && prev.editBlock) {
-        prev.editBlock();
-      }
-    },
-    addChild(type) {
-      this.$store.dispatch('create', { type }).then(block => {
-        this.edit.children.push(block);
-        this.$refs.ctx.close();
-        this.update();
-      });
-    },
-    updateChild(child) {
-      const idx = this.edit.children.findIndex(c => c.id === child.id);
-      this.$set(this.edit.children, idx, child);
-      this.update();
-    },
-    update() {
-      this.$emit('update', this.edit);
-    }
   }
 };
 </script>

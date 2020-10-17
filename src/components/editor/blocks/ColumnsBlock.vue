@@ -8,8 +8,8 @@
         <p class="block-info">{{ block.type }} {{ block.id }}</p>
       </template>
       <ul>
-        <li @click="addChild"><i class="ri-add-box-line"></i></li>
-        <li @click="confirmDelete"><i class="ri-delete-bin-5-line"></i></li>
+        <li @click="addChild" title="Add column"><i class="ri-add-box-line"></i></li>
+        <li @click="confirmDelete" title="Delete block"><i class="ri-delete-bin-5-line"></i></li>
       </ul>
     </context-menu>
     <div class="cols">
@@ -31,7 +31,10 @@ import ContextMenu from '../ContextMenu';
 
 export default {
   name: 'ColumnsBlock',
-  components: { ContextMenu, GroupBlock: () => import('./GroupBlock') },
+  components: {
+    ContextMenu,
+    GroupBlock: () => import('@/components/editor/blocks/group/GroupBlock')
+  },
   props: {
     block: {
       type: Object,
@@ -45,7 +48,7 @@ export default {
   },
   methods: {
     addChild() {
-      this.$store.dispatch('create', { type: 'group', options: { flex: 1 } }).then(block => {
+      this.$store.dispatch('create', { type: 'group' }).then(block => {
         this.edit.children.push(block);
         this.$refs.ctx.close();
         this.update();

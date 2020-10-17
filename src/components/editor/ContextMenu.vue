@@ -4,7 +4,7 @@
     :class="{ vertical, dropdown, visible: isVisible || showMenu }"
     @mouseover="show"
     @mouseleave="hide"
-    v-click-outside="hide"
+    v-click-outside="close"
   >
     <div class="menu-open" @click="toggle">
       <template v-if="!showMenu || dropdown">
@@ -21,7 +21,7 @@
           <slot name="title"></slot>
         </template>
       </header>
-      <slot></slot>
+      <slot :close="close"></slot>
     </div>
   </div>
 </template>
@@ -61,6 +61,7 @@ export default {
     },
     close() {
       this.showMenu = false;
+      this.hide();
       this.$emit('close');
     },
     show() {
