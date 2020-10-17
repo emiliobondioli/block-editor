@@ -10,11 +10,12 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^2.6.11",
-    "vuex": "^3.4.0",
     "lodash-es": "^4.17.15",
     "remixicon": "^2.5.0",
-    "vuedraggable": "^2.24.1"
+    "vue": "^2.6.11",
+    "vue-click-outside": "github:emiliobondioli/click-outside",
+    "vuedraggable": "^2.24.1",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
