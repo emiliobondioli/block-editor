@@ -38,7 +38,10 @@ export default {
     },
     focus() {
       this.$refs.input.focus();
-      this.$refs.input.selectionStart = this.$refs.input.selectionEnd = this.$refs.input.value.length;
+      const length = this.$refs.input.value.length;
+      this.$nextTick(() => {
+        this.$refs.input.selectionStart = this.$refs.input.selectionEnd = length;
+      });
     },
     empty() {}
   }
