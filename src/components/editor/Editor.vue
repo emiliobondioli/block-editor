@@ -1,6 +1,6 @@
 <template>
   <div class="block-editor">
-    <GroupBlock :block="block" @update="block = $event" />
+    <GroupBlock :block="block" @update="block = $event" root />
   </div>
 </template>
 

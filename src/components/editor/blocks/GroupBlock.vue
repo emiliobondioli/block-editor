@@ -42,7 +42,8 @@ export default {
     block: {
       type: Object,
       required: true
-    }
+    },
+    root: Boolean
   },
   data() {
     return {
